@@ -1,38 +1,38 @@
 class Sprite{ // classe de sprite
-    constructor({position, imageSrc, scale = 1, frameMax = 1}){
+    constructor({position, imageSrc, scale = 1, framesMax = 1}){
         this.position = position
         this.width = 50
         this.height = 150
         this.image = new Image()
         this.image.src = imageSrc
         this.scale = scale
-        this.frameMax = frameMax
-        this.frameCurrent = 0
-        this.frameElapsed = 0
-        this.frameHold = 5
+        this.framesMax = framesMax
+        this.framesCurrent = 0
+        this.framesElapsed = 0
+        this.framesHold = 5
     }
 
     draw(){
         c.drawImage(
             this.image,
-            this.frameCurrent * (this.image.width / this.frameMax),
+            this.framesCurrent * (this.image.width / this.framesMax),
             0,
-            this.image.width / this.frameMax,
+            this.image.width / this.framesMax,
             this.image.height ,
             this.position.x, 
             this.position.y, 
-            (this.image.width / this.frameMax) * this.scale, 
+            (this.image.width / this.framesMax) * this.scale, 
             (this.image.height ) * this.scale)
     }
 
     update(){
         this.draw()
-        this.frameElapsed++
-        if(this.frameElapsed % this.frameHold === 0){
-            if(this.frameCurrent < this.frameMax - 1){
-                this.frameCurrent++
+        this.framesElapsed++
+        if(this.framesElapsed % this.framesHold === 0){
+            if(this.framesCurrent < this.framesMax - 1){
+                this.framesCurrent++
             }else{
-                this.frameCurrent = 0 
+                this.framesCurrent = 0 
             }
         }
         
@@ -40,9 +40,24 @@ class Sprite{ // classe de sprite
     }
 }
 
-class Fighter{ // classe de sprite
-    constructor({position, velocity, color = 'red', offset}){
-        this.position = position
+class Fighter extends Sprite{ // classe de sprite
+    constructor({
+        position, 
+        velocity, 
+        color = 'red', 
+        offset, 
+        imageSrc, 
+        scale = 1, 
+        framesMax = 1
+    }){
+        super({
+            position,
+            imageSrc,
+            scale,
+            framesMax,
+            
+        })
+        
         this.velocity = velocity
         this.width = 50
         this.height = 150
@@ -59,19 +74,12 @@ class Fighter{ // classe de sprite
         this.color = color
         this.isAttacking
         this.health = 100
+        this.framesCurrent = 0
+        this.framesElapsed = 0
+        this.framesHold = 5
     }
 
-    draw(){
-        c.fillStyle = this.color //funcao desenhar um sprite, preenche de vermelho e cria um retangulo
-        c.fillRect(this.position.x, this.position.y, this.width, this.height)//retangulo (propocoes)
-
-        //attack box
-        if(this.isAttacking){
-            c.fillStyle = 'green'
-            c.fillRect(this.attackBox.position.x, this.attackBox.position.y, this.attackBox.width, this.attackBox.height)
-        }
-       
-    }
+    
 
     update(){
         this.draw()
